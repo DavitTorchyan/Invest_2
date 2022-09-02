@@ -44,9 +44,7 @@ contract Invest {
         require(amount <= investInfo[msg.sender][id].investAmount, "Not enough investments, try lesser amount.");
         _claim(id, msg.sender);
         totalTokensInvested[msg.sender] -= amount;
-        // console.log("~ file: Invest.sol ~ line 48 ~ withdrawToken ~ investInfo[msg.sender][id].investAmount", investInfo[msg.sender][id].investAmount);        
         investInfo[msg.sender][id].investAmount -= amount;
-        // console.log("~ file: Invest.sol ~ line 48 ~ withdrawToken ~ investInfo[msg.sender][id].investAmount", investInfo[msg.sender][id].investAmount);        
         stakeToken.safeTransfer(msg.sender, amount);
     }
 
@@ -66,12 +64,8 @@ contract Invest {
     function _claim(uint256 id, address account) private {
         require(investInfo[msg.sender][id].investAmount != 0, "No investments.");
         uint256 blocksPassed = ((block.number - investInfo[msg.sender][id].investBlockNumber) / 5);
-        // console.log(" ~ file: Invest.sol ~ line 64 ~ _claim ~ blocksPassed", blocksPassed);    
         uint256 reward = investInfo[msg.sender][id].investAmount * blocksPassed * 5 / 100;
-        // console.log("~ file: Invest.sol ~ line 66 ~ _claim ~ reward", reward);
         stakeToken.safeTransfer(account, reward);
     }
 
 }
-
-//  - ((block.number - investInfo[msg.sender][id].investBlockNumber) % 5)
